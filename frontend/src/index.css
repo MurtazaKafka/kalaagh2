@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  --color-primary: #d67719;
+  --color-secondary: #0ea5e9;
+  --color-background: #fefdfb;
+  --color-text: #1f2937;
+  --color-border: #e5e7eb;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[dir="rtl"] {
+  font-family: 'Vazirmatn', 'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 25px 25px, rgba(246, 234, 213, 0.3) 2px, transparent 0),
+    radial-gradient(circle at 75px 75px, rgba(246, 234, 213, 0.2) 1px, transparent 0);
+  background-size: 100px 100px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Times', serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  border-bottom: 3px solid var(--color-primary);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.vintage-border {
+  border: 2px solid var(--color-primary);
+  border-radius: 0;
+  position: relative;
+}
+
+.vintage-border::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid var(--color-primary);
+  opacity: 0.3;
+}
+
+.newspaper-column {
+  column-count: 2;
+  column-gap: 2rem;
+  column-rule: 1px solid var(--color-border);
+  text-align: justify;
+  hyphens: auto;
+}
+
+@media (max-width: 768px) {
+  .newspaper-column {
+    column-count: 1;
+  }
+}
+
+.btn-primary {
+  @apply bg-kalaagh-600 hover:bg-kalaagh-700 text-white font-semibold py-2 px-4 transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply bg-dari-600 hover:bg-dari-700 text-white font-semibold py-2 px-4 transition-colors duration-200;
+}
+
+.card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm p-6;
+}
+
+.focus-visible {
+  @apply outline-none ring-2 ring-kalaagh-500 ring-offset-2;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

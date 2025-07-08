@@ -1,0 +1,34 @@
+{
+  "name": "kalaagh-database",
+  "version": "1.0.0",
+  "description": "Database schema and migrations for Kalaagh Educational Platform",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "migrate:make": "knex migrate:make",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "migrate:status": "knex migrate:status",
+    "seed:make": "knex seed:make",
+    "seed:run": "knex seed:run",
+    "db:reset": "knex migrate:rollback --all && knex migrate:latest && knex seed:run"
+  },
+  "keywords": [
+    "database",
+    "migrations",
+    "schema",
+    "postgresql",
+    "knex"
+  ],
+  "author": "Kalaagh Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^3.1.0",
+    "pg": "^8.13.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.10"
+  }
+}
