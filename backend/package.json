@@ -15,7 +15,8 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "typecheck": "tsc --noEmit",
     "migrate": "tsx src/database/migrate.ts",
-    "seed": "tsx src/database/seed.ts"
+    "seed": "tsx src/database/seed.ts",
+    "create-test-users": "tsx src/scripts/createTestUsers.ts"
   },
   "keywords": [
     "education",

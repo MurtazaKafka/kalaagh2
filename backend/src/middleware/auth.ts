@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { config } from '../utils/config';
+import { config } from '../utils/config.js';
 
 interface UserPayload {
-  id: string;
+  userId: string;
   email: string;
   role: string;
 }
@@ -11,7 +11,11 @@ interface UserPayload {
 declare global {
   namespace Express {
     interface Request {
-      user?: UserPayload;
+      user?: {
+        id: string;
+        email: string;
+        role: string;
+      };
     }
   }
 }
@@ -33,7 +37,11 @@ export const authenticate = async (
     }
     
     const decoded = jwt.verify(token, config.jwtSecret) as UserPayload;
-    req.user = decoded;
+    req.user = {
+      id: decoded.userId,
+      email: decoded.email,
+      role: decoded.role
+    };
     
     next();
   } catch (error) {

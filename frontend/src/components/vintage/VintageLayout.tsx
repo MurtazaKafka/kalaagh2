@@ -3,13 +3,18 @@ import type { ReactNode } from 'react';
 import { LanguageSelector } from './LanguageSelector';
 import { AfghanPattern } from './AfghanPattern';
 import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../../stores/authStore';
+import { useNavigate } from 'react-router-dom';
 
 interface VintageLayoutProps {
   children: ReactNode;
+  hideNavigation?: boolean;
 }
 
-export const VintageLayout: React.FC<VintageLayoutProps> = ({ children }) => {
-  const { i18n } = useTranslation();
+export const VintageLayout: React.FC<VintageLayoutProps> = ({ children, hideNavigation = false }) => {
+  const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuthStore();
   const isRTL = ['fa', 'ps'].includes(i18n.language);
   const currentDate = new Date().toLocaleDateString(
     i18n.language === 'fa' ? 'fa-AF' : i18n.language === 'ps' ? 'ps-AF' : 'en-US',
@@ -28,8 +33,26 @@ export const VintageLayout: React.FC<VintageLayoutProps> = ({ children }) => {
       {/* Newspaper Header */}
       <header className="newspaper-header">
         <div className="container mx-auto px-4">
-          {/* Language Selector */}
-          <div className="flex justify-end mb-4">
+          {/* Top Bar with Language Selector and User Info */}
+          <div className="flex justify-between items-center mb-4">
+            {!hideNavigation && isAuthenticated && user ? (
+              <div className="flex items-center gap-4">
+                <span className="vintage-text text-sm">
+                  {t('auth.welcome', 'Welcome')}, {user.first_name}
+                </span>
+                <button 
+                  onClick={() => {
+                    logout();
+                    navigate('/login');
+                  }}
+                  className="vintage-link text-sm"
+                >
+                  {t('auth.logout', 'Logout')}
+                </button>
+              </div>
+            ) : (
+              <div />
+            )}
             <LanguageSelector />
           </div>
           
