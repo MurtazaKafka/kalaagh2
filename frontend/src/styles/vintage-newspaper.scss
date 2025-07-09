@@ -1,0 +1,564 @@
+// Vintage Newspaper Design System for Kalaagh Educational Platform
+// Inspired by traditional Afghan newspapers with mathematical patterns
+
+// ==========================
+// COLOR PALETTE
+// ==========================
+
+// Primary vintage colors
+$vintage-paper: #F7F3E8;              // Aged paper background
+$vintage-paper-dark: #EDE4D3;         // Darker paper for contrast
+$vintage-ink: #2C2C2C;                // Traditional ink color
+$vintage-accent: #D4A574;             // Gold accent from Afghan crafts
+
+// Afghan national colors (from flag, excluding religious symbols)
+$afghan-red: #D32011;                 // National red
+$afghan-green: #007A36;               // National green  
+$afghan-black: #000000;               // National black
+
+// Cultural colors (from Afghan textiles and landscapes)
+$kilim-burgundy: #8B0000;             // Traditional carpet color
+$mountain-gray: #696969;              // Hindu Kush mountains
+$wheat-gold: #F4A460;                 // Agricultural heritage
+$earth-brown: #A0522D;                // Natural landscape
+$saffron: #FF8C00;                    // Afghan saffron
+$lapis: #26619C;                      // Lapis lazuli (Afghan gemstone)
+
+// ==========================
+// TYPOGRAPHY
+// ==========================
+
+// Font families
+$font-amiri: 'Amiri', 'Scheherazade New', serif;           // Arabic/Persian headings
+$font-playfair: 'Playfair Display', 'Georgia', serif;      // English headings
+$font-vazir: 'Vazir', 'Noto Naskh Arabic', sans-serif;     // Body text RTL
+$font-inter: 'Inter', 'Helvetica Neue', sans-serif;        // Body text LTR
+$font-mono: 'Roboto Mono', 'Courier New', monospace;       // Dates, numbers
+
+// Font sizes (newspaper hierarchy)
+$size-headline: 3.5rem;               // Main headlines
+$size-subheadline: 2.25rem;           // Section headers
+$size-article-title: 1.75rem;         // Article titles
+$size-body: 1rem;                     // Body text
+$size-caption: 0.875rem;              // Captions, metadata
+$size-fine-print: 0.75rem;            // Legal, copyright
+
+// ==========================
+// SPACING & LAYOUT
+// ==========================
+
+$column-gap: 2rem;
+$gutter: 1.5rem;
+$margin-section: 3rem;
+$padding-card: 1.5rem;
+$border-width: 2px;
+$border-decorative: 3px double $vintage-ink;
+
+// ==========================
+// MIXINS & UTILITIES
+// ==========================
+
+// Aged paper texture
+@mixin paper-texture {
+  position: relative;
+  background-color: $vintage-paper;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      // Paper texture
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' seed='2' /%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.93 0 0 0 0 0.88 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' /%3E%3C/svg%3E"),
+      // Subtle gradient for aging effect
+      radial-gradient(ellipse at top left, rgba(212, 165, 116, 0.1), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(160, 82, 45, 0.05), transparent 50%);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+}
+
+// Newspaper column layout
+@mixin newspaper-columns($count: 3) {
+  column-count: $count;
+  column-gap: $column-gap;
+  column-rule: 1px solid $vintage-paper-dark;
+  
+  @media (max-width: 1024px) {
+    column-count: 2;
+  }
+  
+  @media (max-width: 640px) {
+    column-count: 1;
+  }
+}
+
+// Vintage headline style
+@mixin vintage-headline {
+  font-family: $font-playfair;
+  font-weight: 900;
+  color: $vintage-ink;
+  text-align: center;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  
+  // Decorative border
+  border-top: $border-decorative;
+  border-bottom: $border-decorative;
+  padding: 1rem 0;
+  margin: 2rem 0;
+  
+  // RTL support
+  [dir="rtl"] & {
+    font-family: $font-amiri;
+    letter-spacing: 0;
+  }
+}
+
+// Mathematical geometric shape
+@mixin geometric-shape($type: 'diamond') {
+  @if $type == 'diamond' {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  } @else if $type == 'hexagon' {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  } @else if $type == 'octagon' {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  } @else if $type == 'trapezoid' {
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+// Corner brackets (newspaper style)
+@mixin corner-brackets {
+  &::before,
+  &::after,
+  & > span::before,
+  & > span::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $vintage-ink;
+  }
+  
+  &::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  &::after {
+    top: -2px;
+    right: -2px;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  & > span::before {
+    bottom: -2px;
+    left: -2px;
+    border-right: none;
+    border-top: none;
+  }
+  
+  & > span::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+  }
+}
+
+// ==========================
+// COMPONENT STYLES
+// ==========================
+
+// Main page container
+.vintage-page {
+  @include paper-texture;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+// Newspaper header
+.newspaper-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 4px double $vintage-ink;
+  margin-bottom: $margin-section;
+  
+  .masthead {
+    @include vintage-headline;
+    font-size: $size-headline;
+    border: none;
+    margin: 0;
+    
+    // Decorative elements
+    &::before,
+    &::after {
+      content: '❖';
+      display: inline-block;
+      margin: 0 1rem;
+      color: $afghan-red;
+    }
+  }
+  
+  .edition-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 1rem auto 0;
+    font-family: $font-mono;
+    font-size: $size-caption;
+    color: $vintage-ink;
+    
+    .date {
+      font-style: italic;
+    }
+    
+    .edition {
+      font-weight: 600;
+    }
+    
+    .price {
+      color: $afghan-green;
+    }
+  }
+}
+
+// Content sections
+.content-section {
+  margin-bottom: $margin-section;
+  
+  &.columns {
+    @include newspaper-columns;
+  }
+}
+
+// Article cards
+.article-card {
+  @include paper-texture;
+  position: relative;
+  padding: $padding-card;
+  margin-bottom: 2rem;
+  border: 1px solid $vintage-paper-dark;
+  break-inside: avoid;
+  
+  @include corner-brackets;
+  
+  .article-title {
+    font-family: $font-playfair;
+    font-size: $size-article-title;
+    font-weight: 700;
+    color: $vintage-ink;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    
+    [dir="rtl"] & {
+      font-family: $font-amiri;
+    }
+  }
+  
+  .article-meta {
+    font-family: $font-mono;
+    font-size: $size-caption;
+    color: lighten($vintage-ink, 20%);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dotted $vintage-paper-dark;
+  }
+  
+  .article-content {
+    font-family: $font-inter;
+    font-size: $size-body;
+    line-height: 1.6;
+    color: $vintage-ink;
+    text-align: justify;
+    
+    [dir="rtl"] & {
+      font-family: $font-vazir;
+    }
+  }
+}
+
+// Mathematical pattern overlays
+.pattern-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  
+  &.fibonacci {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,50 Q50,30 30,30 Q30,50 50,50 Q70,50 70,30 Q50,30 50,50' fill='none' stroke='%232C2C2C' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 100px 100px;
+  }
+  
+  &.grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M 20 0 L 0 0 0 20' fill='none' stroke='%232C2C2C' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 20px 20px;
+  }
+  
+  &.tessellation {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cpolygon points='30,0 60,30 30,60 0,30' fill='none' stroke='%232C2C2C' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+}
+
+// Afghan cultural patterns (non-religious)
+.afghan-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  
+  &.kilim {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect x='0' y='0' width='30' height='30' fill='%238B0000' opacity='0.3'/%3E%3Crect x='30' y='30' width='30' height='30' fill='%238B0000' opacity='0.3'/%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='%238B0000' stroke-width='1'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='%238B0000' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+  
+  &.mountains {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Cpolyline points='0,50 25,20 50,35 75,15 100,50' fill='none' stroke='%23696969' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size: 100px 50px;
+    background-position: bottom;
+  }
+  
+  &.wheat {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 80'%3E%3Cpath d='M20,10 Q20,30 15,40 M20,10 Q20,30 25,40 M20,10 L20,40' stroke='%23F4A460' stroke-width='1' fill='none'/%3E%3Ccircle cx='20' cy='10' r='3' fill='%23F4A460'/%3E%3C/svg%3E");
+    background-size: 40px 80px;
+  }
+}
+
+// Buttons with vintage style
+.vintage-button {
+  font-family: $font-inter;
+  font-weight: 600;
+  font-size: $size-body;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid $vintage-ink;
+  background-color: $vintage-paper;
+  color: $vintage-ink;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &:hover {
+    background-color: $vintage-ink;
+    color: $vintage-paper;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &.primary {
+    background-color: $afghan-red;
+    color: white;
+    border-color: $afghan-red;
+    
+    &:hover {
+      background-color: darken($afghan-red, 10%);
+      border-color: darken($afghan-red, 10%);
+    }
+  }
+  
+  &.secondary {
+    background-color: $afghan-green;
+    color: white;
+    border-color: $afghan-green;
+    
+    &:hover {
+      background-color: darken($afghan-green, 10%);
+      border-color: darken($afghan-green, 10%);
+    }
+  }
+  
+  // Geometric shapes
+  &.geometric-diamond {
+    @include geometric-shape('diamond');
+    padding: 1.5rem 2rem;
+  }
+  
+  &.geometric-hexagon {
+    @include geometric-shape('hexagon');
+    padding: 1.5rem 2.5rem;
+  }
+}
+
+// Language selector
+.language-selector {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: $vintage-paper-dark;
+  border: 1px solid $vintage-ink;
+  
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-inter;
+    
+    &:hover {
+      background-color: $vintage-paper;
+      border-color: $vintage-ink;
+    }
+    
+    &.active {
+      background-color: $vintage-ink;
+      color: $vintage-paper;
+      
+      .flag {
+        filter: brightness(1.2);
+      }
+    }
+    
+    .flag {
+      font-size: 1.25rem;
+    }
+    
+    .name {
+      font-weight: 500;
+      
+      [dir="rtl"] & {
+        font-family: $font-vazir;
+      }
+    }
+  }
+}
+
+// Video player with vintage frame
+.video-container {
+  position: relative;
+  background-color: $vintage-ink;
+  padding: 0.5rem;
+  margin: 2rem 0;
+  
+  .film-reel-border {
+    position: absolute;
+    inset: -10px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      $vintage-ink,
+      $vintage-ink 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  video,
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 4px solid $vintage-paper;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .video-ornament {
+    position: absolute;
+    font-size: 1.5rem;
+    color: $afghan-red;
+    z-index: 3;
+    
+    &.top-left { top: -5px; left: -5px; }
+    &.top-right { top: -5px; right: -5px; }
+    &.bottom-left { bottom: -5px; left: -5px; }
+    &.bottom-right { bottom: -5px; right: -5px; }
+  }
+}
+
+// Course progress with geometric design
+.progress-container {
+  margin: 1rem 0;
+  
+  .progress-bar {
+    height: 20px;
+    background-color: $vintage-paper-dark;
+    border: 2px solid $vintage-ink;
+    position: relative;
+    overflow: hidden;
+    
+    &.geometric-progress {
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        $afghan-green,
+        $afghan-green 10px,
+        darken($afghan-green, 10%) 10px,
+        darken($afghan-green, 10%) 20px
+      );
+      transition: width 0.3s ease;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shine 2s infinite;
+      }
+    }
+  }
+  
+  .progress-text {
+    font-family: $font-mono;
+    font-size: $size-caption;
+    font-weight: 600;
+    color: $vintage-ink;
+    margin-top: 0.5rem;
+    display: block;
+    text-align: center;
+  }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// Responsive utilities
+@media (max-width: 640px) {
+  .newspaper-header .masthead {
+    font-size: 2rem;
+  }
+  
+  .article-card {
+    padding: 1rem;
+  }
+}
+
+// Print styles
+@media print {
+  .vintage-page {
+    background-color: white;
+    
+    &::before {
+      display: none;
+    }
+  }
+  
+  .language-selector,
+  .video-container,
+  button {
+    display: none;
+  }
+}
